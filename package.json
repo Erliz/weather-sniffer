@@ -1,0 +1,22 @@
+{
+  "name": "weather-sniffer",
+  "version": "1.0.0",
+  "description": "Grab weather data from OpenWeatherMap and log into InfluxDB",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Stanislav Vetlovskiy <mrerliz@gmail.com> (https://erliz.ru/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Erliz/weather-sniffer/issues"
+  },
+  "homepage": "https://github.com/Erliz/weather-sniffer#readme",
+  "dependencies": {
+    "bluebird": "3.4.0",
+    "influx": "4.2.0",
+    "openweathermap": "1.0.0",
+    "winston": "^2.2.0"
+  }
+}
