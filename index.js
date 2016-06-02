@@ -115,8 +115,12 @@ function makePoint(data)
   if (data.wind) {
     Object.assign(point, {
       wind_speed: data.wind.speed,
-      wind_deg: data.wind.deg,
     });
+    if (data.wind.deg) {
+      Object.assign(point, {
+        wind_deg: data.wind.deg,
+      });
+    }
   }
   if (data.clouds) {
     Object.assign(point, {
