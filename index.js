@@ -2,7 +2,6 @@ let Promise = require('bluebird');
 let Winston = require('winston');
 let OpenWeatherMap = Promise.promisifyAll(require('openweathermap'));
 let Influx = Promise.promisifyAll(require('influx'));
-let request = Promise.promisifyAll(require('request'));
 
 let dbName = process.env.APP_DB_NAME || 'home';
 let dbConnectionURL = (process.env.APP_DB_URL || 'http://localhost:8086/') + dbName;
@@ -88,13 +87,16 @@ function serve()
 
 function logTemperature({cityId, tags = null})
 {
-  OpenWeatherMap.nowAsync({
-    id: cityId,
-    // rnd: new Date().getTime(), // may be with rand it`s hit not in cache
-  })
-    .then(res => makePoint(res))
-    .then(point => dbClient.writePointAsync(dbMesurment, point, tags))
-    .catch(err => logger.error(err));
+  try {
+    OpenWeatherMap.nowAsync({
+      id: cityId,
+      // rnd: new Date().getTime(), // may be with rand it`s hit not in cache
+    }).then(res => makePoint(res))
+      .then(point => dbClient.writePointAsync(dbMesurment, point, tags))
+      .catch(err => logger.error(err));
+    } cathc (err) {
+      logger.error(err);
+    }
 }
 
 function makePoint(data)
@@ -113,13 +115,9 @@ function makePoint(data)
     humidity: data.main.humidity,
   };
   if (data.wind) {
-    Object.assign(point, {
-      wind_speed: data.wind.speed,
-    });
+    point.wind_speed = data.wind.speed
     if (data.wind.deg) {
-      Object.assign(point, {
-        wind_deg: data.wind.deg,
-      });
+      point.wind_deg = data.wind.deg;
     }
   }
   if (data.clouds) {
