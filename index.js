@@ -94,7 +94,7 @@ function logTemperature({cityId, tags = null})
     }).then(res => makePoint(res))
       .then(point => dbClient.writePointAsync(dbMesurment, point, tags))
       .catch(err => logger.error(err));
-    } cathc (err) {
+    } catch (err) {
       logger.error(err);
     }
 }
